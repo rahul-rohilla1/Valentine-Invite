@@ -17,8 +17,8 @@ const Invitation: React.FC<InvitationProps> = ({ onAccept }) => {
     if (!containerRef.current) return;
     
     const container = containerRef.current.getBoundingClientRect();
-    const btnWidth = 120;
-    const btnHeight = 50;
+    const btnWidth = 140; // Slightly larger for safety
+    const btnHeight = 60;
 
     const maxX = container.width - btnWidth - 20;
     const maxY = container.height - btnHeight - 20;
@@ -69,10 +69,10 @@ const Invitation: React.FC<InvitationProps> = ({ onAccept }) => {
   return (
     <div 
       ref={containerRef}
-      className="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl p-8 text-center border-4 border-pink-200 relative min-h-[550px] flex flex-col justify-center transition-all duration-500 hover:shadow-pink-200/50"
+      className="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl p-8 text-center border-4 border-pink-200 relative min-h-[550px] flex flex-col justify-center transition-all duration-500 hover:shadow-pink-200/50 no-select"
     >
-      <div className="absolute top-4 right-4 text-2xl animate-pulse">🌙</div>
-      <div className="absolute bottom-4 left-4 text-2xl animate-bounce">☕</div>
+      <div className="absolute top-4 right-4 text-2xl animate-pulse select-none">🌙</div>
+      <div className="absolute bottom-4 left-4 text-2xl animate-bounce select-none">☕</div>
 
       <div className="mb-6 pointer-events-none select-none">
         <div className="relative inline-block">
@@ -99,10 +99,10 @@ const Invitation: React.FC<InvitationProps> = ({ onAccept }) => {
         <button
           onClick={handleYes}
           disabled={isLoading}
-          style={{ transform: `scale(${1 + attempts * 0.1})` }}
+          style={{ transform: `scale(${1 + attempts * 0.12})` }}
           className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold py-3 px-10 rounded-full shadow-lg transition-all active:scale-95 disabled:opacity-50 text-xl z-20 whitespace-nowrap"
         >
-          {isLoading ? "✨ Baking Pastry... ✨" : "YES! ❤️"}
+          {isLoading ? "✨ Preparing treats... ✨" : "YES! ❤️"}
         </button>
 
         <button
@@ -111,16 +111,15 @@ const Invitation: React.FC<InvitationProps> = ({ onAccept }) => {
           style={isMoved ? {
             position: 'absolute',
             left: `${noButtonPos.x}px`,
-            top: `${noButtonPos.y}px`,
-            transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)'
+            top: `${noButtonPos.y}px`
           } : {}}
-          className="bg-slate-200 hover:bg-slate-300 text-slate-600 font-bold py-3 px-10 rounded-full shadow-md text-lg whitespace-nowrap z-10 transition-colors"
+          className={`bg-slate-200 hover:bg-slate-300 text-slate-600 font-bold py-3 px-10 rounded-full shadow-md text-lg whitespace-nowrap z-10 transition-move ${isMoved ? '' : 'sm:static'}`}
         >
           {noButtonPhrases[Math.min(attempts, noButtonPhrases.length - 1)]}
         </button>
       </div>
       
-      <p className="mt-8 text-sm text-pink-400 opacity-80 font-medium">
+      <p className="mt-8 text-sm text-pink-400 opacity-80 font-medium select-none">
         {attempts > 0 ? `Attempts to decline: ${attempts}` : "Noodles, chai, and you. Perfect! 🍜☕✨"}
       </p>
     </div>
